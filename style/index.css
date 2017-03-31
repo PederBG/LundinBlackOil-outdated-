@@ -1,0 +1,97 @@
+html{
+    background-image: url(../images/indexBackground.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100000%; /*TODO FIX THIS SHIT */
+}
+
+@media (max-width: 900px) {
+    html {
+        zoom: 1.5;
+        -moz-transform: scale(3);
+        -moz-transform-origin: 0 0;
+    }
+
+    #logo{
+        position: absolute;
+        top: 10%;
+        width: 50%;
+        left: 35%;
+    }
+    h1 {
+        color: darkslategrey;
+        margin-bottom: 50px;
+    }
+
+    #menu {
+        text-align: center;
+        position: absolute;
+        width: 40%;
+        height: 50%;
+        top: 34%;
+        left: 30%;
+        color: aliceblue;
+    }
+
+    .button {
+        line-height: 60px;
+        padding: 10px 60px 10px 60px;
+        background-color: burlywood;
+        border-radius: 30%;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: sandybrown;
+    }
+
+    .button:visited {
+        color: aliceblue;
+    }
+
+    .button:link {
+        text-decoration: none;
+    }
+}
+@media (min-width: 600px) {
+    #logo{
+        position: absolute;
+        width: 20%;
+        top: 10%;
+        left: 43%;/* not perfect styling..*/
+    }
+
+    h1 {
+        color: darkslategray;
+        margin-bottom: 50px;
+    }
+
+    #menu {
+        text-align: center;
+        position: absolute;
+        width: 40%;
+        height: 50%;
+        top: 34%;
+        left: 30%;
+        color: aliceblue;
+    }
+
+    .button {
+        line-height: 60px;
+        padding: 10px 60px 10px 60px;
+        background-color: burlywood;
+        border-radius: 30%;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: sandybrown;
+    }
+
+    .button:visited {
+        color: aliceblue;
+    }
+
+    .button:link {
+        text-decoration: none;
+    }
+}
