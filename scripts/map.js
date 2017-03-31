@@ -34,6 +34,11 @@ function makeOilBox(content, type, lat, long) {
     marker.addListener('click', function () {
         infowindow.open(map, marker);
         openBoxes.unshift(infowindow);
+        if (!isMultipleTextboxes){
+            for (var i = 1; i < openBoxes.length; i++){
+                openBoxes[i].close();
+            }
+        }
     });
 }
 // ---------------------------------------- ............ --------------------------------------- \\
@@ -73,13 +78,20 @@ function myFunction(xml) {
     for (var i = 0; i < oilBoxCordinates.length; i++){
         var tempDist = findDist(oilBoxCordinates[i][0], oilBoxCordinates[i][1], lat, long);
         if ((tempDist < 40000) && tempDist < infoWindows[i].dist){
+            //deletes old weather message if a new one is closer
             var tempContent = infoWindows[i].content.split(oilBoxCordinates[i][1])[0];
-            console.log(tempContent);
-            infoWindows[i].setContent(tempContent + "<br>" + txt);
+            infoWindows[i].setContent(tempContent + oilBoxCordinates[i][1]  + "<br>" + txt);
             infoWindows[i].dist = tempDist;
         }
     }
-
+    //adds "weather data not available" on short info windows
+    for (var j = 0; j < oilBoxCordinates.length; j++){
+        if (infoWindows[j].content.length < 80) {
+            var tempContent2 = infoWindows[j].content.split(oilBoxCordinates[j][1])[0];
+            infoWindows[j].setContent(tempContent2 + oilBoxCordinates[j][1] + "<br>" +
+                "Platformen har ingen tilgjengelig værdata");
+        }
+    }
 }
 // ---------------------------------------- ............. --------------------------------------- \\
 
@@ -94,6 +106,7 @@ function findDist(aLat, aLong, bLat, bLong) {
 var oilBoxCordinates = [];
 var infoWindows = [];
 
+//oil platform url parts from yr.no/sted/Oljeplattformene/
 var platforms = [/*Nordsjøen:*/ "Alvheim", "Balder", "Brage", "Ekofisk A", "Ekofisk H", "Eldfisk A", "Gjøa", "Grane",
     "Gudrun", "Gullfaks A", "Gyda", "Heimdal", "Oseberg A", "Oseberg Øst", "Petrojarl Varg", "Ringhorne", "Sleipner A",
     "Snorre A", "Statfjord A", "Tor", "Troll A", "Ula", "Valemon", "Valhall", "Veslefrikk B", "Visund",
@@ -102,8 +115,6 @@ var platforms = [/*Nordsjøen:*/ "Alvheim", "Balder", "Brage", "Ekofisk A", "Eko
 for (var i = 0; i < platforms.length; i++){
     getWeather(platforms[i]);
 }
-
-
 
 // making the info boxes
     for (var i = 0; i < data.length; i++) {
@@ -117,7 +128,3 @@ for (var i = 0; i < platforms.length; i++){
             console.log("TypeError, object: " + i);
         }
     }
-
-
-    //infoWindows[0].setContent(infoWindows[0].content + weatherBoxes[0]);
-

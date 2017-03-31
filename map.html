@@ -10,7 +10,6 @@
          * element that contains the map. */
         #map {
             border-style: solid;
-            z-index: 1;
             height:85%;
             width: 90%;
             top: 47%;
@@ -18,6 +17,7 @@
             margin-right: -50%;
             transform: translate(-50%, -50%);
             margin-bottom: 10px;
+            z-index: 0;
         }
         /* Optional: Makes the sample page fill the window. */
         html, body {
@@ -31,28 +31,48 @@
     </style>
 </head>
 <body>
-<!-- ------------------ NavBar ----------------- -->
-<div id="navbar">
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="map.html">Maps</a></li>
-        <li><a href="calculator.html">Calculator</a></li>
-        <li style="float:right"><a href="options.html">Options</a></li>
-    </ul>
-</div>
-<!-- ------------------ ------ ----------------- -->
-<div id="map"></div>
-<script>
-    var map;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 64.397, lng: 7.644},
-            zoom: 4
-        });
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLqi7VCFRa7voVGflNyUXyhyL8OgqIQ68&callback=initMap&libraries=geometry"></script>
-<script src="scripts/map.js"></script>
+    <!-- ------------------ NavBar ----------------- -->
+    <div id="navbar">
+        <ul>
+            <li><a onclick="showOptions()">Options</a></li>
+            <li style="float:right"><a href="calculator.html">Calculator</a></li>
+            <li style="float:right"><a href="map.html">Maps</a></li>
+            <li style="float:right"><a href="index.html">Home</a></li>
+        </ul>
+    </div>
+    <!-- ------------------ ...... ----------------- -->
+    <!-- ------------------ Options ----------------- -->
+    <div id="optionMenu">
+        <div id="mainMenu">
+            <ul>
+                <li onclick="generalOptions()"><a>General</a></li>
+                    <ul id="generalMenu">
+                        <li class="general" id="general_1" onclick="multipleTextboxes()">Multiple textboxes</li>
+                        <li class="general" id="general_2" onclick="showGrid()">Show grid</li>
+                        <li class="general">todo</li>
+                        <li class="general" id="generalLast">todo</li>
+                    </ul>
+                <li><a>Filters</a></li>
+                <li><a>Elements</a></li>
+                <li><a>Weather</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- ------------------ ...... ----------------- -->
+    <div id="map"></div>
+    <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 64.397, lng: 7.644},
+                zoom: 4
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLqi7VCFRa7voVGflNyUXyhyL8OgqIQ68&callback=initMap&libraries=geometry"></script>
+    <script src="scripts/map.js"></script>
+    <script src="scripts/map_options.js"></script>
+
 
 </body>
 </html>

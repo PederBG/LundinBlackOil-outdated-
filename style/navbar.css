@@ -1,4 +1,4 @@
-ul {
+#navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -6,11 +6,11 @@ ul {
     background-color: #333;
 }
 
-li {
+#navbar li {
     float: left;
 }
 
-li a {
+#navbar li a {
     display: block;
     color: white;
     text-align: center;
@@ -18,17 +18,63 @@ li a {
     text-decoration: none;
 }
 
-li:nth-child(4) a{
-    margin-right: 30px;
-}
-li:nth-child(2) a{ /* TODO temp løsing */
-    background-color: #222;
+#navbar li:nth-child(1) a{
+    cursor: pointer;
 }
 
-/* Change the link color to #111 (black) on hover */
-li a:hover {
+#navbar li a:hover {
     background-color: #111;
 }
-/* TODO li a:active{
-    background-color: aqua;
-}*/
+
+/* --------------------------------- */
+
+#optionMenu{
+    position: fixed;
+    color: whitesmoke;
+    z-index: 1;
+    top:18%;
+    left: 7%;
+    display: inline-block;
+}
+
+#mainMenu ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#mainMenu li a{
+    display: block;
+    width: 120px;
+    background-color: #333333;
+    margin-bottom: 2px;
+    text-align: center;
+    padding: 10px 30px 10px 30px;
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+#optionMenu li a:hover{
+    background-color: #111111;
+}
+
+/* ------ general menu ------ */
+.general{
+    display: block;
+    width: 100px;
+    font-size: small;
+    padding: 5px 20px 5px 20px;
+    background-color: #333333;
+    text-align: center;
+    border-radius: 10% 40% 40% 10%;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border-left: 100px;
+}
+#generalLast{
+    margin-bottom: 10px;
+}
+.general:hover{
+    background-color: #111111;
+}
