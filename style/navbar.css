@@ -12,10 +12,10 @@
 
 #navbar li a {
     display: block;
-    color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    color: white;
 }
 
 #navbar li:nth-child(1) a{
@@ -25,6 +25,20 @@
 #navbar li a:hover {
     background-color: #111;
 }
+
+/* --------- SubMenu -------- */
+#subMenu a{
+    background-color: darkslategray;
+    border-radius: 40%;
+    font-size: small;
+    cursor: pointer;
+}
+
+#subMenu a:hover{
+    font-size: 14px;
+}
+
+/* -------------------------- */
 
 /* --------------------------------- */
 

@@ -24,10 +24,13 @@ function makeOilBox(content, type, lat, long) {
         },
         map: map
     });
+    infoMarkers.push(marker);
+
 
     var infowindow = new google.maps.InfoWindow({
         content: content + "<br>" + type + "<br>" + "Lat: " + lat + ", Long: " + long,
-        dist: 40001
+        dist: 40001,
+        type: type
 });
     infoWindows.push(infowindow);
 
@@ -42,8 +45,6 @@ function makeOilBox(content, type, lat, long) {
     });
 }
 // ---------------------------------------- ............ --------------------------------------- \\
-
-
 // closing all boxes when map is clicked
 var openBoxes = [];
 google.maps.event.addListener(map, 'click', function() {
@@ -51,6 +52,52 @@ google.maps.event.addListener(map, 'click', function() {
         openBoxes[i].close();
     }
 });
+// --------------------------- Showing and hiding markers/info windows -------------------------- \\
+function sortAwayOil(){
+    for (var i = 0; i < infoWindows.length; i++){
+        if (infoWindows[i].type == "OIL") {
+            infoMarkers[i].setMap(null);
+        }
+    }
+}
+function sortInOil() {
+    for (var i = 0; i < infoWindows.length; i++){
+        if (infoWindows[i].type == "OIL") {
+            infoMarkers[i].setMap(map);
+        }
+    }
+}
+
+function sortAwayGas(){
+    for (var i = 0; i < infoWindows.length; i++){
+        if (infoWindows[i].type == "GAS") {
+            infoMarkers[i].setMap(null);
+        }
+    }
+}
+function sortInGas() {
+    for (var i = 0; i < infoWindows.length; i++){
+        if (infoWindows[i].type == "GAS") {
+            infoMarkers[i].setMap(map);
+        }
+    }
+}
+
+function sortAwayOther(){
+    for (var i = 0; i < infoWindows.length; i++){
+        if ((infoWindows[i].type != "GAS") && (infoWindows[i].type != "OIL")){
+            infoMarkers[i].setMap(null);
+        }
+    }
+}
+function sortInOther() {
+    for (var i = 0; i < infoWindows.length; i++){
+        if ((infoWindows[i].type != "GAS") && (infoWindows[i].type != "OIL")) {
+            infoMarkers[i].setMap(map);
+        }
+    }
+}
+// ---------------------------------------- ............ --------------------------------------- \\
 
 // ---------------------------------------- WEATHER BOX CODE --------------------------------------- \\
 
@@ -105,6 +152,7 @@ function findDist(aLat, aLong, bLat, bLong) {
 // ---------------------------------------- MAIN (RUNNING SCRIPT) --------------------------------------- \\
 var oilBoxCordinates = [];
 var infoWindows = [];
+var infoMarkers = [];
 
 //oil platform url parts from yr.no/sted/Oljeplattformene/
 var platforms = [/*Nordsjøen:*/ "Alvheim", "Balder", "Brage", "Ekofisk A", "Ekofisk H", "Eldfisk A", "Gjøa", "Grane",
@@ -112,8 +160,8 @@ var platforms = [/*Nordsjøen:*/ "Alvheim", "Balder", "Brage", "Ekofisk A", "Eko
     "Snorre A", "Statfjord A", "Tor", "Troll A", "Ula", "Valemon", "Valhall", "Veslefrikk B", "Visund",
     /*Norskehavet:*/ "Draugen", "Goliat", "Heidrun", "Kristin", "Njord A", "Norne", "Åsgard A"];
 
-for (var i = 0; i < platforms.length; i++){
-    getWeather(platforms[i]);
+for (var z = 0; z < platforms.length; z++) {
+    getWeather(platforms[z]);
 }
 
 // making the info boxes

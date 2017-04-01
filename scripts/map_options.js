@@ -1,6 +1,43 @@
 /**
  * Created by PederGB on 31.03.2017.
  */
+// ------------------------------------- Maps navBar ------------------------------------- \\
+var subMenu = document.getElementById("subMenu");
+subMenu.style.display = "none";
+
+function showSubMenu(){
+    if (subMenu.style.display == "none"){
+        subMenu.style.display = "block";
+    }
+    else{
+        subMenu.style.display = "none";
+    }
+}
+
+var counter = 0;
+
+function baseMap() {
+    map.data.forEach(function(feature) {
+        // If you want, check here for some constraints.
+        map.data.remove(feature);
+        document.getElementById("subMenu4").style.backgroundColor = "darkslategray";
+        document.getElementById("subMenu1").style.backgroundColor = "darkcyan";
+        document.getElementById("subMenu4").innerHTML = "Focus Water";
+        counter = 0;
+    });
+}
+
+function focusWaterMap(){
+    counter +=1;
+    map.data.loadGeoJson(
+        'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_ocean.geojson');
+    document.getElementById("subMenu1").style.backgroundColor = "darkslategray";
+    document.getElementById("subMenu4").style.backgroundColor = "darkcyan";
+    document.getElementById("subMenu4").innerHTML = "Focus Water: x" + counter;
+}
+
+// ------------------------------------ .......... ------------------------------------- \\
+
 var menu = document.getElementById("optionMenu");
 menu.style.display = "none";
 
@@ -53,13 +90,66 @@ function showGrid() {
         google.maps.event.addListener(map, 'mousemove', function (event) {
             var latitude = event.latLng.lat();
             var longitude = event.latLng.lng();
-            console.log(latitude + ', ' + longitude);
+            //console.log(latitude + ', ' + longitude);
             if(isShowGrid) {
                 gridDisplay.innerHTML = latitude.toFixed(3) + ', ' + longitude.toFixed(3);
             }
         });
     }
 }
+// ------------------------------------- ............. ------------------------------------- \\
 
+// ------------------------------------- Filter Button ------------------------------------- \\
+var filterMenu = document.getElementById("filterMenu");
+filterMenu.style.display = "none";
+
+function filterOptions() {
+    if (filterMenu.style.display == "none"){
+        filterMenu.style.display = "block";
+    }
+    else{
+        filterMenu.style.display = "none";
+    }}
+
+var oilButton = document.getElementById("filter_1");
+var gasButton = document.getElementById("filter_2");
+var otherButton = document.getElementById("filter_3");
+
+oilButton.style.backgroundColor = "green";
+gasButton.style.backgroundColor = "green";
+otherButton.style.backgroundColor = "green";
+
+function sortOil(){
+    if (oilButton.style.backgroundColor == "green") {
+        oilButton.style.backgroundColor = "#333333";
+        sortAwayOil();
+    }
+    else{
+        oilButton.style.backgroundColor = "green";
+        sortInOil();
+    }
+}
+
+function sortGas(){
+    if (gasButton.style.backgroundColor == "green") {
+        gasButton.style.backgroundColor = "#333333";
+        sortAwayGas();
+    }
+    else{
+        gasButton.style.backgroundColor = "green";
+        sortInGas();
+    }
+}
+
+function sortOther(){
+    if (otherButton.style.backgroundColor == "green") {
+        otherButton.style.backgroundColor = "#333333";
+        sortAwayOther();
+    }
+    else{
+        otherButton.style.backgroundColor = "green";
+        sortInOther();
+    }
+}
 
 // ------------------------------------- ............. ------------------------------------- \\

@@ -36,7 +36,14 @@
         <ul>
             <li><a onclick="showOptions()">Options</a></li>
             <li style="float:right"><a href="calculator.html">Calculator</a></li>
-            <li style="float:right"><a href="map.html">Maps</a></li>
+                <div id="subMenu">
+                    <li style="float:right"><a id="subMenu4" style="color:beige" onclick="focusWaterMap()">Focus Water</a></li>
+                    <li style="float:right" ><a style="color:beige">Magnetic</a></li>
+                    <li style="float:right"><a style="color:beige">Bathymetry</a></li>
+                    <li style="float:right"><a id="subMenu1" style="color:beige" onclick="baseMap()">Base Map</a></li>
+
+                </div>
+            <li style="float:right"><a onclick="showSubMenu()">Maps</a></li>
             <li style="float:right"><a href="index.html">Home</a></li>
         </ul>
     </div>
@@ -52,7 +59,12 @@
                         <li class="general">todo</li>
                         <li class="general" id="generalLast">todo</li>
                     </ul>
-                <li><a>Filters</a></li>
+                <li onclick="filterOptions()"><a>Filters</a></li>
+                    <ul id="filterMenu">
+                        <li class="general" id="filter_1" onclick="sortOil()">Oil</li>
+                        <li class="general" id="filter_2" onclick="sortGas()">Gas</li>
+                        <li class="general" id="filter_3" onclick="sortOther()">Other</li>
+                    </ul>
                 <li><a>Elements</a></li>
                 <li><a>Weather</a></li>
             </ul>
