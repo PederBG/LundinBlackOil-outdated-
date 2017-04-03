@@ -141,9 +141,8 @@ function myFunction(xml) {
     }
 }
 // ---------------------------------------- ............. --------------------------------------- \\
-
+// finding distance between two coordinates
 google.maps.event.addListener(map, 'click', findDist);
-    
 function findDist(aLat, aLong, bLat, bLong) {
     var a = new google.maps.LatLng(aLat,aLong);
     var b = new google.maps.LatLng(bLat,bLong);
@@ -164,10 +163,28 @@ function searchPlatforms(input) {
                 platformsFound.push(data[i]);
             }
         }
-        catch (e){//do not give one singe shit
+        catch (e){//aint doing nothing
         }
     }
     return platformsFound;
+}
+
+//changes marker by a given platform name
+function changeMarker(name){
+    for (var i = 0; i < infoWindows.length; i++){
+        if (infoWindows[i].content.indexOf(name) != -1){
+            var realColor = infoMarkers[i].icon.strokeColor;
+            infoMarkers[i].icon.strokeColor = "#22d300";
+            infoMarkers[i].icon.scale = 7;
+            infoMarkers[i].setMap(map);
+            break;
+        }
+    }
+    setTimeout(function () { //the selected marker goes back to normal after 6 seconds
+        infoMarkers[i].icon.strokeColor = realColor;
+        infoMarkers[i].icon.scale = 2.5;
+        infoMarkers[i].setMap(map);
+    }, 6000)
 }
 
 

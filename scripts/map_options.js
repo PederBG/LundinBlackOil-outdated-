@@ -174,15 +174,33 @@ function searchOptions(){
         openSearchBox = true;
     }
 }
-
+var results = [];
 function searchFunction() {
     searchResults.innerHTML = "";
     if (searchInput.value.length > 0){
-        var result = searchPlatforms(searchInput.value);
-        for (var i = 0; i < result.length; i++){
-            searchResults.innerHTML += "<li class='results' >" + result[i].name + "</li>";
+        results = searchPlatforms(searchInput.value);
+        for (var i = 0; i < results.length; i++){
+            searchResults.innerHTML += "<li class='results'>" + results[i].name + "</li>";
+            searchResults.addEventListener("click", locatePlatform);
         }
     }
+}
+
+function locatePlatform(){
+    var targetPlatform = event.target.innerHTML;
+    for (var i = 0; i < results.length; i++){
+        if (results[i].name.indexOf(targetPlatform) != -1) {
+            var lat = results[i].vertices.SumLat;
+            var lng = results[i].vertices.SumLong;
+
+            var center = new google.maps.LatLng(lat, lng);
+            map.panTo(center);
+            map.setZoom(6);
+            changeMarker(results[i].name);
+            break;
+        }
+    }
+
 }
 
 searchButton.addEventListener("click", searchFunction);
