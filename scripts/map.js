@@ -149,6 +149,32 @@ function findDist(aLat, aLong, bLat, bLong) {
     var b = new google.maps.LatLng(bLat,bLong);
     return google.maps.geometry.spherical.computeDistanceBetween(a,b);
 }
+// ---------------------------------------- Search for platform --------------------------------------- \\
+function searchPlatforms(input) {
+    request.open("GET", "../data/dataOil.json", false); // reusing code form higher up
+    request.send(null);
+    var data = JSON.parse(request.responseText);
+
+    var platformsFound = [];
+    for (var i = 0; i < data.length; i++){
+        try {
+            var tempPlatform = data[i].name.toLowerCase();
+            if (tempPlatform.indexOf(input.toLowerCase()) != -1) {
+                console.log(data[i].name.toLowerCase());
+                platformsFound.push(data[i]);
+            }
+        }
+        catch (e){//do not give one singe shit
+        }
+    }
+    return platformsFound;
+}
+
+
+// ---------------------------------------- ............. --------------------------------------- \\
+
+
+
 // ---------------------------------------- MAIN (RUNNING SCRIPT) --------------------------------------- \\
 var oilBoxCordinates = [];
 var infoWindows = [];
@@ -160,9 +186,10 @@ var platforms = [/*Nordsjøen:*/ "Alvheim", "Balder", "Brage", "Ekofisk A", "Eko
     "Snorre A", "Statfjord A", "Tor", "Troll A", "Ula", "Valemon", "Valhall", "Veslefrikk B", "Visund",
     /*Norskehavet:*/ "Draugen", "Goliat", "Heidrun", "Kristin", "Njord A", "Norne", "Åsgard A"];
 
-for (var z = 0; z < platforms.length; z++) {
-    getWeather(platforms[z]);
-}
+function makeAllInfoWindows() {
+    for (var z = 0; z < platforms.length; z++) {
+        getWeather(platforms[z]);
+    }
 
 // making the info boxes
     for (var i = 0; i < data.length; i++) {
@@ -176,3 +203,5 @@ for (var z = 0; z < platforms.length; z++) {
             console.log("TypeError, object: " + i);
         }
     }
+}
+makeAllInfoWindows();

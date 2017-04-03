@@ -153,3 +153,41 @@ function sortOther(){
 }
 
 // ------------------------------------- ............. ------------------------------------- \\
+// ------------------------------------- Filter Button ------------------------------------- \\
+var searchBox = document.getElementById("searchBox");
+var searchInput = document.getElementById("searchInput");
+var searchButton = document.getElementById("searchButton");
+var searchResults = document.getElementById("searchResults");
+
+
+var openSearchBox = false;
+
+function searchOptions(){
+    if (openSearchBox == true) {
+        searchBox.style.display = "none";
+        searchResults.style.display = "none";
+        openSearchBox = false;
+    }
+    else{
+        searchBox.style.display = "block";
+        searchResults.style.display = "block";
+        openSearchBox = true;
+    }
+}
+
+function searchFunction() {
+    searchResults.innerHTML = "";
+    if (searchInput.value.length > 0){
+        var result = searchPlatforms(searchInput.value);
+        for (var i = 0; i < result.length; i++){
+            searchResults.innerHTML += "<li class='results' >" + result[i].name + "</li>";
+        }
+    }
+}
+
+searchButton.addEventListener("click", searchFunction);
+
+
+// ------------------------------------- ............. ------------------------------------- \\
+
+
