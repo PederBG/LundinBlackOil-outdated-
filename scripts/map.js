@@ -40,16 +40,19 @@ function makeOilBox(content, type, lat, long) {
         if (!isMultipleTextboxes){
             for (var i = 1; i < openBoxes.length; i++){
                 openBoxes[i].close();
+                openBoxes.splice(i);
             }
         }
     });
 }
 // ---------------------------------------- ............ --------------------------------------- \\
 // closing all boxes when map is clicked
+//TODO small bug: if infowindow is closed by click on the same marker and then trying to reopen by clicking marker again
 var openBoxes = [];
 google.maps.event.addListener(map, 'click', function() {
     for (var i = 0; i < openBoxes.length; i++){
-        openBoxes[i].close();
+        openBoxes[i].close(); //closing infobox
+        if(!isMultipleTextboxes) openBoxes.splice(i); //removing infobox from openBoxes list
     }
 });
 // --------------------------- Showing and hiding markers/info windows -------------------------- \\
@@ -102,28 +105,39 @@ function sortInOther() {
 // ---------------------------------------- WEATHER BOX CODE --------------------------------------- \\
 
 // getting weather XML from yr.no
-function getWeather(platform) {
+function getWeather(platform, parseTxt) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
+    xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            myFunction(this);
+            loopPlatformsSetWeather(this, parseTxt);
         }
     };
     xmlhttp.open("GET", "https://www.yr.no/sted/Norge/Hav/" + platform + "/varsel.xml", true);
     xmlhttp.send();
 }
-function myFunction(xml) {
-    data = xml.responseXML;
-    var txt = data.getElementsByTagName("location")[2].getElementsByTagName("body")[0].firstChild.data;
-    var lat = parseFloat(data.getElementsByTagName("location")[1].getAttributeNode("latitude").value);
-    var long = parseFloat(data.getElementsByTagName("location")[1].getAttributeNode("longitude").value);
 
+function loopPlatformsSetWeather(xml, parseTxt) {
+    data = xml.responseXML;
+    var txt;
+    var lat;
+    var lng;
+
+    if (parseTxt == "forecast") {
+        txt = data.getElementsByTagName("location")[2].getElementsByTagName("body")[0].firstChild.data
+        lat = parseFloat(data.getElementsByTagName("location")[1].getAttributeNode("latitude").value);
+        lng = parseFloat(data.getElementsByTagName("location")[1].getAttributeNode("longitude").value);
+    }
+    else if(parseTxt == "wind"){
+        txt = "Vindhastighet: " + data.getElementsByTagName("observations")[0].getElementsByTagName("windSpeed")[0].getAttributeNode("mps").value + "m/s";
+        lat = data.getElementsByTagName("observations")[0].getElementsByTagName("weatherstation")[0].getAttributeNode("lat").value;
+        lng = data.getElementsByTagName("observations")[0].getElementsByTagName("weatherstation")[0].getAttributeNode("lon").value;
+    }
     //console.log(oilBoxCordinates[0]);
     //console.log(infoWindows[0].content);
 
     // adds weather forecast to markers if it's closer than 50 km to a yr.no forecast.
     for (var i = 0; i < oilBoxCordinates.length; i++){
-        var tempDist = findDist(oilBoxCordinates[i][0], oilBoxCordinates[i][1], lat, long);
+        var tempDist = findDist(oilBoxCordinates[i][0], oilBoxCordinates[i][1], lat, lng);
         if ((tempDist < 40000) && tempDist < infoWindows[i].dist){
             //deletes old weather message if a new one is closer
             var tempContent = infoWindows[i].content.split(oilBoxCordinates[i][1])[0];
@@ -132,13 +146,13 @@ function myFunction(xml) {
         }
     }
     //adds "weather data not available" on short info windows
-    for (var j = 0; j < oilBoxCordinates.length; j++){
+    /*for (var j = 0; j < oilBoxCordinates.length; j++){
         if (infoWindows[j].content.length < 80) {
             var tempContent2 = infoWindows[j].content.split(oilBoxCordinates[j][1])[0];
             infoWindows[j].setContent(tempContent2 + oilBoxCordinates[j][1] + "<br>" +
                 "Platformen har ingen tilgjengelig værdata");
         }
-    }
+    }*/
 }
 // ---------------------------------------- ............. --------------------------------------- \\
 // finding distance between two coordinates
@@ -197,15 +211,16 @@ var oilBoxCordinates = [];
 var infoWindows = [];
 var infoMarkers = [];
 
+
 //oil platform url parts from yr.no/sted/Oljeplattformene/
 var platforms = [/*Nordsjøen:*/ "Alvheim", "Balder", "Brage", "Ekofisk A", "Ekofisk H", "Eldfisk A", "Gjøa", "Grane",
     "Gudrun", "Gullfaks A", "Gyda", "Heimdal", "Oseberg A", "Oseberg Øst", "Petrojarl Varg", "Ringhorne", "Sleipner A",
     "Snorre A", "Statfjord A", "Tor", "Troll A", "Ula", "Valemon", "Valhall", "Veslefrikk B", "Visund",
     /*Norskehavet:*/ "Draugen", "Goliat", "Heidrun", "Kristin", "Njord A", "Norne", "Åsgard A"];
 
-function makeAllInfoWindows() {
+function makeAllInfoWindows(parseTxt) {
     for (var z = 0; z < platforms.length; z++) {
-        getWeather(platforms[z]);
+        getWeather(platforms[z], parseTxt);
     }
 
 // making the info boxes
@@ -220,5 +235,12 @@ function makeAllInfoWindows() {
             console.log("TypeError, object: " + i);
         }
     }
+    console.log(isWeatherWorking);
 }
-makeAllInfoWindows();
+try{
+    makeAllInfoWindows("wind");
+}
+//TODO
+catch (e){
+    //alert("Cannot get weather data.\n\nCORS error: Cross-origin request is not allowed. Fix it, Peder.\n");
+}

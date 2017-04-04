@@ -171,6 +171,7 @@ function searchOptions(){
     else{
         searchBox.style.display = "block";
         searchResults.style.display = "block";
+        searchInput.focus();
         openSearchBox = true;
     }
 }
@@ -179,9 +180,18 @@ function searchFunction() {
     searchResults.innerHTML = "";
     if (searchInput.value.length > 0){
         results = searchPlatforms(searchInput.value);
-        for (var i = 0; i < results.length; i++){
-            searchResults.innerHTML += "<li class='results'>" + results[i].name + "</li>";
-            searchResults.addEventListener("click", locatePlatform);
+        if (results.length == 0){
+            searchResults.innerHTML = "<li class='results'>" + "No platforms found" + "</li>";
+            searchResults.addEventListener("click", function () {
+                searchInput.value = "";
+                searchInput.focus();
+            })
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                searchResults.innerHTML += "<li class='results'>" + results[i].name + "</li>";
+                searchResults.addEventListener("click", locatePlatform);
+            }
         }
     }
 }
